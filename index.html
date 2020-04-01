@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<font color="red"><b>Corona Tracker By Country</b> </font> <br>
+<input type="text" id="myInput">
+<button type="button" id="myBtn">Country</button>
+
+
+<br>
+<img id="my_image" src="" />
+<table border="1">
+    <tr >
+        <th> Country</th>
+        <th> Case</th>
+        <th> Death</th>
+        <th> recovered</th>
+    </tr>
+
+    <tr >
+        <td> <p id="countryAffected"></p></td>
+        <td> <p id="caseReported"></p></td>
+        <td> <p id="totalDeath"></p></td>
+        <td> <p id="totalRecovered"></p></td>
+    </tr>
+
+</table>
+<font color="grey">** Supporting any country like India,US,France,Germany,Italy,China,Brazil,Australia etc.</font>
+<br>
+<font color="blue"> &#169; Contact me at rabi007007@gmail.com </font>
+
+<script type="text/javascript">
+
+var flagOfCountry;
+
+$(document).ready(function(){
+    // Get value on button click and show alert
+    $("#myBtn").click(function(){
+        var countryName = $("#myInput").val();
+       // alert(str);
+       showCountryStatus1(countryName);
+
+    });
+});
+
+function showCountryStatus1(countryName)
+{
+$.ajax({
+
+    url: "https://covid19-server.chrismichael.now.sh/api/v1/ReportsByCountries/"+countryName,
+    dataType: "json",
+    crossDomain:true,
+    success: function( response ) {
+    	var stringResponse= JSON.parse(JSON.stringify(response));
+    	var flagOfCountry= stringResponse.report.flag;
+        console.log("ppa= "+stringResponse.report.country );
+       document.getElementById("countryAffected").innerHTML = stringResponse.report.country;
+       document.getElementById("caseReported").innerHTML = stringResponse.report.cases;
+       document.getElementById("totalDeath").innerHTML = stringResponse.report.deaths;
+       document.getElementById("totalRecovered").innerHTML = stringResponse.report.recovered;
+       flagOfCountry=stringResponse.report.flag;
+        $("#my_image").attr("src",stringResponse.report.flag);
+    }
+
+});
+}
+
+
+</script>
+
+</body>
+</html>
